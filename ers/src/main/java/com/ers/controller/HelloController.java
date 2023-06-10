@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,10 +68,14 @@ public class HelloController {
         userArrayList.add(user);
         try {
             String sql = "INSERT INTO user VALUES(?,?,?,?,?,?,?,?)";
-            System.out.println(user.getBirthdate());
             java.sql.Date sqlDate = new java.sql.Date(user.getBirthdate().getTime());
-            System.out.println(sqlDate);
-            int result = jdbcTemplate.update(sql,3, user.getId(), user.getPassword(), user.getName(), user.getTel(), user.getAddress(), sqlDate, user.getEmail());
+            Connection con = null;
+            // user_id 넣기
+            String stme = "select COUNT(*) from user";
+            int user_id = jdbcTemplate.queryForObject(stme, Integer.class);
+            System.out.println(user_id);
+
+            int result = jdbcTemplate.update(sql,user_id+1, user.getId(), user.getPassword(), user.getName(), user.getTel(), user.getAddress(), sqlDate, user.getEmail());
         } catch (Exception e){
             System.out.println(e);
         }
