@@ -125,11 +125,11 @@ public class HelloController {
     public String loginResult(@Validated LoginInfo loginInfo, Errors errors, HttpSession session, HttpServletResponse response) {
         if(checkLogin(loginInfo.getUserid(), loginInfo.getPwd())){
             if(errors.hasErrors()) {
-                return "login";
+                return "signin";
             }
             session.setAttribute("authInfo", loginInfo);
             Cookie rememberCookie = new Cookie("REMEMBERID", loginInfo.getUserid());
-            rememberCookie.setPath("/login");
+            rememberCookie.setPath("/signin");
             if(loginInfo.getRememberid()){
                 rememberCookie.setMaxAge(60*60*24*30);
             } else{
