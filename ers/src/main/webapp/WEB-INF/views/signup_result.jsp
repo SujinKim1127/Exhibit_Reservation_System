@@ -13,7 +13,7 @@
 <p> <spring:message code="tel" />: ${user.tel} </p>
 <p> <spring:message code="address" />: ${user.address} </p>
 <p> <spring:message code="birthdate" />: ${user.birthdate} </p>
-<a href="./home"> 뒤로.. </a>
+<a href="./signin"> 로그인 </a>
 <body>
 
 </body>

@@ -1,6 +1,7 @@
 package com.ers.controller;
 
 import com.ers.ResponseInfo;
+import com.ers.model.LoginInfo;
 import com.ers.model.User;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,18 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import java.time.LocalDate;
+
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -33,6 +46,8 @@ public class HelloController {
 
     public HelloController() {
         userArrayList = new ArrayList<User>();
+        String login = "SELECT * FROM user WHERE userid = ?";
+
     }
 
 
@@ -50,9 +65,6 @@ public class HelloController {
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
-    @GetMapping("/users")
-    public List<User> users() { return userArrayList; }
 
 
     @PostMapping("/signup/submit")
@@ -81,6 +93,67 @@ public class HelloController {
         }
         return "signup_result";
     }
+
+    public boolean checkLogin(String login, String loginPassword) {
+        String query = "SELECT * FROM user WHERE id = ?";
+        boolean existID = jdbcTemplate.query(query, rs -> {
+            if (rs.next()) {
+                String dbpw = rs.getString("password");
+                if (dbpw.equals(loginPassword)) {
+                    return true;
+                }
+            }
+            return false;
+        }, login);
+
+        return existID;
+    }
+
+
+    @RequestMapping(value = "/signin", method = RequestMethod.GET)
+    public String signin(LoginInfo loginInfo, Model model, HttpSession session, @CookieValue(value="REMEMBERID", required=false) Cookie rCookie) {
+        if(session == null || session.getAttribute("authInfo") == null) {
+            if(rCookie != null) {
+                loginInfo.setUserid(rCookie.getValue());
+                loginInfo.setRememberid(true);
+            } }
+        return "signin";
+    }
+
+
+    @PostMapping("/signin/submit")
+    public String loginResult(@Validated LoginInfo loginInfo, Errors errors, HttpSession session, HttpServletResponse response) {
+        if(checkLogin(loginInfo.getUserid(), loginInfo.getPwd())){
+            if(errors.hasErrors()) {
+                return "login";
+            }
+            session.setAttribute("authInfo", loginInfo);
+            Cookie rememberCookie = new Cookie("REMEMBERID", loginInfo.getUserid());
+            rememberCookie.setPath("/login");
+            if(loginInfo.getRememberid()){
+                rememberCookie.setMaxAge(60*60*24*30);
+            } else{
+                rememberCookie.setMaxAge(0);
+            }
+            response.addCookie(rememberCookie);
+            return "signin_result";
+        }
+        else{
+            errors.rejectValue("userid", "invalid");
+            errors.rejectValue("pwd", "nomatch");
+            return "signin";
+        }
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+        if(session != null) session.invalidate();
+        return "logout";
+    }
+
+
+
+
 
 
 }
