@@ -7,6 +7,7 @@
 <body>
 
 <p> <spring:message code="userid" />: ${loginInfo.userid} </p>
+<a href="/signin"> 뒤로 </a>
 
 </body>
 </html>

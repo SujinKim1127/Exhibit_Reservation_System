@@ -116,7 +116,8 @@ public class HelloController {
             if(rCookie != null) {
                 loginInfo.setUserid(rCookie.getValue());
                 loginInfo.setRememberid(true);
-            } }
+            }
+        }
         return "signin";
     }
 
@@ -124,6 +125,7 @@ public class HelloController {
     @PostMapping("/signin/submit")
     public String loginResult(@Validated LoginInfo loginInfo, Errors errors, HttpSession session, HttpServletResponse response) {
         if(checkLogin(loginInfo.getUserid(), loginInfo.getPwd())){
+            session.setAttribute("loginID", loginInfo.getUserid());
             if(errors.hasErrors()) {
                 return "signin";
             }
@@ -150,6 +152,47 @@ public class HelloController {
         if(session != null) session.invalidate();
         return "logout";
     }
+
+    @RequestMapping("/userInfo/{id}")
+    public String userinfo(@PathVariable("id") String userid, User user, HttpSession session) {
+        if(user == null) user = new User();
+        String loginID = session.getAttribute("loginID").toString();
+        String query = "SELECT * FROM user WHERE id = ?";
+        user = jdbcTemplate.queryForObject(query, (rs, rowNum) -> {
+            User u = new User();
+            u.setId(rs.getString("id"));
+            u.setName(rs.getString("name"));
+            u.setPassword(rs.getString("password"));
+            u.setTel(rs.getString("tel"));
+            u.setEmail(rs.getString("email"));
+            u.setAddress(rs.getString("address"));
+            u.setBirthdate(rs.getDate("birthdate"));
+            return u;
+        }, loginID);
+        session.setAttribute("loginUser", user);
+        return "userinfo";
+    }
+
+    @RequestMapping("/modifyUserInfo")
+    public String modifyuserinfo(User user) { return "modifyuserinfo"; }
+
+    @PostMapping("/submituserinfo")
+    public String modifyUserInfoResult(@Validated User user, Errors errors, HttpSession session) {
+        if(errors.hasErrors()) {
+            System.out.println(errors);
+            return "modifyuserinfo";
+        }
+        if(user != null) {
+            String loginID = session.getAttribute("loginID").toString();
+            String edit = "UPDATE user SET id=?, password=?, name=?,tel=?, address=?, birthdate=?, email=? WHERE id=?";
+
+            java.sql.Date sqlDate = new java.sql.Date(user.getBirthdate().getTime());
+            user.setBirthdate(sqlDate);
+            jdbcTemplate.update(edit, user.getId(), user.getPassword(), user.getName(), user.getTel(), user.getAddress(),sqlDate, user.getEmail(), loginID);
+        }
+        return "modifyinfo";
+    }
+
 
 
 
