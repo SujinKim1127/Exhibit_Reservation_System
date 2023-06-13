@@ -127,8 +127,15 @@ public class UserController {
         return "logout";
     }
 
+    @RequestMapping("/userInfo")
+    public String userinfo(@PathVariable("id") HttpSession session){
+        if(session.getAttribute("authInfo") == null) return "redirect:/signin";
+        return "error";
+    }
+
     @RequestMapping("/userInfo/{id}")
     public String userinfo(@PathVariable("id") String userid, User user, HttpSession session) {
+        if(session.getAttribute("authInfo") == null) return "redirect:/signin";
         if(user == null) user = new User();
         String loginID = session.getAttribute("loginID").toString();
         String query = "SELECT * FROM user WHERE id = ?";
