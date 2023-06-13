@@ -24,14 +24,6 @@ public class MypageController {
     MessageSource messageSource;
     private List<User> userList;
     private List<Mypage> mypageList;
-
-    private List<Likes> Likes = new ArrayList<Likes>();
-    private List<Orders> Orders = new ArrayList<Orders>();
-
-
-
-    public MypageController() {
-    }
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -49,57 +41,18 @@ public class MypageController {
             return rs.getInt("user_id");
         }, loginID);
 
-        System.out.println("yserid "+user_id);
-
-        String orderstmt = "select * from orders where user_id= ?";
-        List<Map<String, Object>> orders = jdbcTemplate.queryForList(orderstmt, user_id);
-
-        for (Map<String, Object> order : orders) {
-            int orderId = (int) order.get("order_id");
-            int userId = (int) order.get("user_id");
-            int exhibitId = (int) order.get("exhibit_id");
-            String title = (String) order.get("title");
-            int price = (int) order.get("price");
-            String purchaseDate = order.get("purchase_date").toString();
-            String address = (String) order.get("address");
-            String name = (String) order.get("name");
-            String tel = (String) order.get("tel");
-            int amount = (int) order.get("amount");
-
-            Orders newOrder = new Orders();
-            newOrder.setOrder_id(orderId);
-            newOrder.setUser_id(userId);
-            newOrder.setExhibit_id(exhibitId);
-            newOrder.setTitle(title);
-            newOrder.setPrice(price);
-            newOrder.setPurchase_date(purchaseDate);
-            newOrder.setAddress(address);
-            newOrder.setName(name);
-            newOrder.setTel(tel);
-            newOrder.setAmount(amount);
-
-            Orders.add(newOrder);
-        }
         mypageList = new ArrayList<Mypage>();
-
-        String likestmt = "select * from likes where user_id= ?";
-        List<Map<String, Object>> likes = jdbcTemplate.queryForList(likestmt, user_id);
-
-        for (Map<String, Object> like : likes) {
-            int wishId = (int) like.get("wish_id");
-            int userId = (int) like.get("user_id");
-            int exhibitId = (int) like.get("exhibit_id");
-
-            Likes newLike = new Likes(wishId, userId, exhibitId);
-            Likes.add(newLike);
-        }
 
         mypageList.add(new Mypage(
                 jdbcTemplate.query("select * from likes where user_id=?",
                         new RowMapper<Likes>(){
                             @Override
                             public Likes mapRow(ResultSet rs, int rowNum) throws SQLException {
-                                Likes like = new Likes(rs.getInt("wish_id"), rs.getInt("user_id"), rs.getInt("exhibit_id"));
+                                Likes like = new Likes();
+                                like.setWish_id(rs.getInt("wish_id"));
+                                like.setUser_id(rs.getInt("user_id"));
+                                like.setExhibit_id(rs.getInt("exhibit_id"));
+                                like.setTitle(rs.getString("title"));
                                 return like;
                             }
                         }

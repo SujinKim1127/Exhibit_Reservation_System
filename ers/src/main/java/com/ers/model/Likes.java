@@ -8,15 +8,10 @@ public class Likes {
     private int user_id;
     private int exhibit_id;
 
+    private String title;
+
     public int getWish_id() {
         return wish_id;
-    }
-
-    @JsonCreator
-    public Likes(@JsonProperty("wish_id") int wish_id, @JsonProperty("user_id") int user_id, @JsonProperty("exhibit_id") int exhibit_id){
-        this.wish_id = wish_id;
-        this.exhibit_id = exhibit_id;
-        this.user_id = user_id;
     }
 
     public void setWish_id(int wish_id) {
@@ -37,5 +32,13 @@ public class Likes {
 
     public void setExhibit_id(int exhibit_id) {
         this.exhibit_id = exhibit_id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
