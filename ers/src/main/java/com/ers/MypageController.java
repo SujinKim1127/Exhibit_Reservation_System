@@ -11,10 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -23,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class ApiController {
+public class MypageController {
     @Autowired
     MessageSource messageSource;
     private List<User> userList;
@@ -34,7 +30,7 @@ public class ApiController {
 
 
 
-    public ApiController() {
+    public MypageController() {
     }
     private JdbcTemplate jdbcTemplate;
 
@@ -60,8 +56,7 @@ public class ApiController {
             int userId = (int) order.get("user_id");
             int exhibitId = (int) order.get("exhibit_id");
             int price = (int) order.get("price");
-            LocalDateTime purchaseDateTime = (LocalDateTime) order.get("purchase_date");
-            Date purchaseDate = Date.from(purchaseDateTime.atZone(ZoneId.systemDefault()).toInstant());
+            String purchaseDate = order.get("purchase_date").toString();
             String address = (String) order.get("address");
             String name = (String) order.get("name");
             String tel = (String) order.get("tel");

@@ -1,6 +1,7 @@
 package com.ers.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -29,9 +30,9 @@ public class Orders {
     private int amount;
   
     public Orders(@JsonProperty("order_id") int order_id, @JsonProperty("user_id") int user_id,
-                    @JsonProperty("exhibit_id") int exhibit_id, @JsonProperty("price") int price,
-                    @JsonProperty("purchase_date") String purchase_date, @JsonProperty("address") String address,
-                    @JsonProperty("name") String name,@JsonProperty("tel") String tel,@JsonProperty("amount") int amount) {
+                  @JsonProperty("exhibit_id") int exhibit_id, @JsonProperty("price") int price,
+                  @JsonProperty("purchase_date") String purchase_date, @JsonProperty("address") String address,
+                  @JsonProperty("name") String name, @JsonProperty("tel") String tel, @JsonProperty("amount") int amount) {
           this.order_id = order_id;
           this.user_id = user_id;
           this.exhibit_id = exhibit_id;
