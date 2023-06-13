@@ -33,23 +33,6 @@ public class LikeController {
 
     @PostMapping("/like")
     public ResponseEntity<Object> addLike(@RequestBody @Validated Likes like, HttpServletResponse response) throws IOException {
-//        try {
-//            // 유저 존재 파악
-//            String query = "SELECT * FROM user WHERE id = ?";
-//            boolean existID = jdbcTemplate.query(query, rs -> {
-//                if (rs.next()) {
-//                    return true;
-//                }
-//                return false;
-//            }, like.getUser_id());
-//            if(!existID) throw new Exception();
-//        } catch (Exception e){
-//            System.out.println(e);
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                    .body(new com.ers.ResponseInfo(HttpStatus.NOT_FOUND.value(),
-//                            messageSource.getMessage("NotFoundUser", null, null)));
-//        }
-
         try {
             String query = "INSERT INTO likes VALUES(?,?,?,?)";
             String stme = "select COUNT(*) from likes";
