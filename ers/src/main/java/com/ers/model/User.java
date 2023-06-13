@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -15,6 +16,8 @@ public class User {
     private String name;
     @NotEmpty
     private String password;
+
+    @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}")
     private String tel;
     private String address;
     @Email(message = "잘못된 이메일 형식입니다.")
