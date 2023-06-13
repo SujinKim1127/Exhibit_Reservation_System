@@ -58,6 +58,7 @@ public class MypageController {
             int orderId = (int) order.get("order_id");
             int userId = (int) order.get("user_id");
             int exhibitId = (int) order.get("exhibit_id");
+            String title = (String) order.get("title");
             int price = (int) order.get("price");
             String purchaseDate = order.get("purchase_date").toString();
             String address = (String) order.get("address");
@@ -65,7 +66,18 @@ public class MypageController {
             String tel = (String) order.get("tel");
             int amount = (int) order.get("amount");
 
-            Orders newOrder = new Orders(orderId, userId, exhibitId, price, purchaseDate, address, name, tel, amount);
+            Orders newOrder = new Orders();
+            newOrder.setOrder_id(orderId);
+            newOrder.setUser_id(userId);
+            newOrder.setExhibit_id(exhibitId);
+            newOrder.setTitle(title);
+            newOrder.setPrice(price);
+            newOrder.setPurchase_date(purchaseDate);
+            newOrder.setAddress(address);
+            newOrder.setName(name);
+            newOrder.setTel(tel);
+            newOrder.setAmount(amount);
+
             Orders.add(newOrder);
         }
         mypageList = new ArrayList<Mypage>();
@@ -96,11 +108,18 @@ public class MypageController {
                 new RowMapper<Orders>() {
                     @Override
                     public Orders mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        Orders order = new Orders(rs.getInt("order_id"), rs.getInt("user_id")
-                                ,rs.getInt("exhibit_id"), rs.getInt("price")
-                                , rs.getString("purchase_date"), rs.getString("address")
-                                , rs.getString("name"), rs.getString("tel"), rs.getInt("amount"));
-                        return order;
+                        Orders orders = new Orders();
+                        orders.setOrder_id(rs.getInt("order_id"));
+                        orders.setUser_id(rs.getInt("user_id"));
+                        orders.setExhibit_id(rs.getInt("exhibit_id"));
+                        orders.setTitle(rs.getString("title"));
+                        orders.setPrice(rs.getInt("price"));
+                        orders.setPurchase_date(rs.getString("purchase_date"));
+                        orders.setAddress(rs.getString("address"));
+                        orders.setName(rs.getString("name"));
+                        orders.setTel(rs.getString("tel"));
+                        orders.setAmount(rs.getInt("amount"));
+                        return orders;
                     }
                 }
         , user_id)));
