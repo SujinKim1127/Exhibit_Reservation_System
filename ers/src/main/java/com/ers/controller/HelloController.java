@@ -1,8 +1,7 @@
 package com.ers.controller;
 
 import com.ers.ResponseInfo;
-import com.ers.model.LoginInfo;
-import com.ers.model.User;
+import com.ers.model.*;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,12 +24,16 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -47,14 +50,8 @@ public class HelloController {
     public HelloController() {
         userArrayList = new ArrayList<User>();
         String login = "SELECT * FROM user WHERE userid = ?";
-
     }
 
-
-//    @RequestMapping(value = "/signup", method = RequestMethod.GET)
-//    public String signup(User user, Model model, HttpSession session) {
-//        return "signup";
-//    }
 
     @GetMapping("/signup")
     public String signup(User user){
@@ -192,11 +189,4 @@ public class HelloController {
         }
         return "modifyinfo";
     }
-
-
-
-
-
-
-
 }
