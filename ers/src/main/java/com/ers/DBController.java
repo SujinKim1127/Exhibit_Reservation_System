@@ -29,11 +29,6 @@ public class DBController {
     @JsonIgnore
     private ErrorCodes message;
 
-//    @PostMapping("/signup/submit")
-//    public ResponseEntity<HttpResponse.ResponseInfo> addUser() throws IOException {
-//        try{
-//
-//        }
-//    }
+
 
 }

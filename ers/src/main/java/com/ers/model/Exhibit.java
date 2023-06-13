@@ -1,15 +1,30 @@
 package com.ers.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PositiveOrZero;
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class Exhibit {
+    @PositiveOrZero
     private int exhibit_id;
+    @NotEmpty
     private String title;
     private String contents;
     private String img;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String start_date;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String end_date;
+    @PositiveOrZero
     private int price;
+    @NotEmpty
     private String owner;
+    @PositiveOrZero
     private int likes;
+
 
     public int getExhibit_id() {
         return exhibit_id;

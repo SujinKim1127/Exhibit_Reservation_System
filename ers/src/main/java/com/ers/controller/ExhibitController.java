@@ -1,7 +1,11 @@
 package com.ers.controller;
 
 import com.ers.model.Exhibit;
+import com.ers.model.ResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +24,9 @@ public class ExhibitController {
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    @Autowired
+    MessageSource messageSource;
 
     //전시 목록 전체 조회
     @GetMapping("/exhibitlist")
@@ -45,7 +52,7 @@ public class ExhibitController {
 
     //전시 상세 조회
     @GetMapping("/exhibit")
-    public Exhibit exhibitdetail(@RequestParam(value="id", required = true) String exhibitId) {
+    public ResponseEntity<Object> exhibitdetail(@RequestParam(value="id", required = true) String exhibitId) {
         String query = "SELECT * FROM exhibit WHERE exhibit_id = " + exhibitId;
         List<Exhibit> exhibits = jdbcTemplate.query(query,
                 new RowMapper<Exhibit>() {
@@ -65,7 +72,15 @@ public class ExhibitController {
                     }
                 });
 
-        Exhibit exhibit = exhibits.get(0);
-        return exhibit;
+        if (exhibits.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseInfo(HttpStatus.NOT_FOUND.value(),
+                    messageSource.getMessage("NotFound", null, null)));
+
+        } else {
+            Exhibit exhibit = exhibits.get(0);
+            return ResponseEntity.ok(exhibit);
+            //return ResponseEntity.ok(new ResponseInfo(HttpStatus.OK.value(), exhibit));
+        }
+
     }
 }
