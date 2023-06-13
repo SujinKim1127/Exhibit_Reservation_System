@@ -1,39 +1,47 @@
 package com.ers.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
-
 public class Orders {
+    @PositiveOrZero
     private int order_id;
+    @NotNull
+    @PositiveOrZero
     private int user_id;
+    @NotNull
+    @PositiveOrZero
     private int exhibit_id;
+    @PositiveOrZero
     private int price;
-
-    @DateTimeFormat(pattern="yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date purchase_date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private String purchase_date;
     private String address;
+    @NotEmpty
     private String name;
+    @NotEmpty
+    @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}")
     private String tel;
+    @NotNull
+    @Positive
     private int amount;
-
+  
     public Orders(@JsonProperty("order_id") int order_id, @JsonProperty("user_id") int user_id,
-                  @JsonProperty("exhibit_id") int exhibit_id, @JsonProperty("price") int price,
-                  @JsonProperty("purchase_date") Date purchase_date, @JsonProperty("address") String address,
-                  @JsonProperty("name") String name,@JsonProperty("tel") String tel,@JsonProperty("amount") int amount) {
-        this.order_id = order_id;
-        this.user_id = user_id;
-        this.exhibit_id = exhibit_id;
-        this.price = price;
-        this.purchase_date = purchase_date;
-        this.address = address;
-        this.name = name;
-        this.tel = tel;
-        this.amount = amount;
-    }
+                    @JsonProperty("exhibit_id") int exhibit_id, @JsonProperty("price") int price,
+                    @JsonProperty("purchase_date") String purchase_date, @JsonProperty("address") String address,
+                    @JsonProperty("name") String name,@JsonProperty("tel") String tel,@JsonProperty("amount") int amount) {
+          this.order_id = order_id;
+          this.user_id = user_id;
+          this.exhibit_id = exhibit_id;
+          this.price = price;
+          this.purchase_date = purchase_date;
+          this.address = address;
+          this.name = name;
+          this.tel = tel;
+          this.amount = amount;
+      }
 
     public int getOrder_id() {
         return order_id;
@@ -67,12 +75,12 @@ public class Orders {
         this.price = price;
     }
 
-    public Date getPurchase_date() {
+    public String getPurchase_date() {
         return purchase_date;
     }
 
-    public void setPurchase_date(Date purchase_date) {
-        this.purchase_date = purchase_date;
+    public void setPurchase_date(String purchase_date) {
+      this.purchase_date = purchase_date;
     }
 
     public String getAddress() {

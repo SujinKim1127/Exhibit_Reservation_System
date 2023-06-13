@@ -19,6 +19,7 @@ public class DBHandler {
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<ResponseInfo> handleSQLException(SQLException ex) {
         //에러 정보 로깅
+        ex.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 new ResponseInfo(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                       messageSource.getMessage("DBError", null, null)  )

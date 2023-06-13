@@ -79,7 +79,6 @@ public class ExhibitController {
         } else {
             Exhibit exhibit = exhibits.get(0);
             return ResponseEntity.ok(exhibit);
-            //return ResponseEntity.ok(new ResponseInfo(HttpStatus.OK.value(), exhibit));
         }
 
     }

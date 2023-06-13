@@ -15,7 +15,6 @@ public class ExhibitControllerAdvice {
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ResponseInfo> handleNotFoundExceptions(NoHandlerFoundException ex) {
-        System.out.println("메시지" + ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ResponseInfo(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
     }

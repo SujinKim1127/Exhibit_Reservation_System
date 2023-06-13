@@ -2,22 +2,27 @@ package com.ers.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class Exhibit {
+    @NotNull
     @PositiveOrZero
     private int exhibit_id;
     @NotEmpty
     private String title;
     private String contents;
     private String img;
+    @NotEmpty
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String start_date;
+    @NotEmpty
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String end_date;
+    @NotNull
     @PositiveOrZero
     private int price;
     @NotEmpty
