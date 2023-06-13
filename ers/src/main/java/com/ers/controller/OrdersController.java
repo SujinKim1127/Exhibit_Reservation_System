@@ -1,19 +1,22 @@
 package com.ers.controller;
 
 import com.ers.ResponseInfo;
+import com.ers.model.ExhibitResponse;
 import com.ers.model.Orders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @RestController
 public class OrdersController {
@@ -27,9 +30,43 @@ public class OrdersController {
     @Autowired
     MessageSource messageSource;
 
+    //주문 GET
+    @GetMapping("/order")
+    public ResponseEntity<Object> getOrder(@RequestParam(value="id", required = true) String orderId) {
+        String query = "SELECT * FROM orders WHERE order_id = ?";
+        List<Orders> orders = jdbcTemplate.query(
+                query,
+                new RowMapper<Orders>() {
+                    @Override
+                    public Orders mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        Orders orders = new Orders();
+                        orders.setOrder_id(rs.getInt("order_id"));
+                        orders.setUser_id(rs.getInt("user_id"));
+                        orders.setExhibit_id(rs.getInt("exhibit_id"));
+                        orders.setPrice(rs.getInt("price"));
+                        orders.setPurchase_date(rs.getString("purchase_date"));
+                        orders.setAddress(rs.getString("address"));
+                        orders.setName(rs.getString("name"));
+                        orders.setTel(rs.getString("tel"));
+                        orders.setAmount(rs.getInt("amount"));
+                        return orders;
+                    }
+                }
+        );
+
+        if (orders.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new com.ers.model.ResponseInfo(HttpStatus.NOT_FOUND.value(),
+                    messageSource.getMessage("NotFound", null, null)));
+
+        } else {
+            Orders order = orders.get(0);
+            return ResponseEntity.ok(order);
+        }
+    }
+
     //주문 POST
     @PostMapping("/order")
-    public ResponseEntity<ResponseInfo> addOrder(@RequestBody @Validated Orders orders) {
+    public ResponseEntity<Object> addOrder(@RequestBody @Validated Orders orders) {
         int exhibitPrice;
         //유저가 존재하는지 확인
         try {
@@ -70,9 +107,12 @@ public class OrdersController {
                     orders.getAddress(), orders.getName(), orders.getTel(), orders.getAmount());
 
             if (rowsAffected > 0) {
+                //방금 생성한 주문의 order_id 가져오기
+                String selectQuery = "SELECT LAST_INSERT_ID()";
+                int generatedId = jdbcTemplate.queryForObject(selectQuery, Integer.class);
+
                 return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(new ResponseInfo(HttpStatus.CREATED.value(),
-                                messageSource.getMessage("Created", null, null)));
+                        .body(new ExhibitResponse(generatedId));
             } else {
                 throw new Exception();
             }
