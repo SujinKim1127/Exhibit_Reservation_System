@@ -85,21 +85,17 @@ public class MypageController {
         String likestmt = "select * from likes where user_id= ?";
         List<Map<String, Object>> likes = jdbcTemplate.queryForList(likestmt, user_id);
 
-        for (Map<String, Object> like : likes) {
-            int wishId = (int) like.get("wish_id");
-            int userId = (int) like.get("user_id");
-            int exhibitId = (int) like.get("exhibit_id");
-
-            Likes newLike = new Likes(wishId, userId, exhibitId);
-            Likes.add(newLike);
-        }
 
         mypageList.add(new Mypage(
                 jdbcTemplate.query("select * from likes where user_id=?",
                         new RowMapper<Likes>(){
                             @Override
                             public Likes mapRow(ResultSet rs, int rowNum) throws SQLException {
-                                Likes like = new Likes(rs.getInt("wish_id"), rs.getInt("user_id"), rs.getInt("exhibit_id"));
+                                Likes like = new Likes();
+                                like.setWish_id(rs.getInt("wish_id"));
+                                like.setUser_id(rs.getInt("user_id"));
+                                like.setExhibit_id(rs.getInt("exhibit_id"));
+                                like.setTitle(rs.getString("title"));
                                 return like;
                             }
                         }
