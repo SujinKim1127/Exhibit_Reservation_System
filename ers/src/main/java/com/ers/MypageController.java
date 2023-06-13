@@ -58,6 +58,7 @@ public class MypageController {
             int orderId = (int) order.get("order_id");
             int userId = (int) order.get("user_id");
             int exhibitId = (int) order.get("exhibit_id");
+            String title = (String) order.get("title");
             int price = (int) order.get("price");
             String purchaseDate = order.get("purchase_date").toString();
             String address = (String) order.get("address");
@@ -69,6 +70,7 @@ public class MypageController {
             newOrder.setOrder_id(orderId);
             newOrder.setUser_id(userId);
             newOrder.setExhibit_id(exhibitId);
+            newOrder.setTitle(title);
             newOrder.setPrice(price);
             newOrder.setPurchase_date(purchaseDate);
             newOrder.setAddress(address);
@@ -110,6 +112,7 @@ public class MypageController {
                         orders.setOrder_id(rs.getInt("order_id"));
                         orders.setUser_id(rs.getInt("user_id"));
                         orders.setExhibit_id(rs.getInt("exhibit_id"));
+                        orders.setTitle(rs.getString("title"));
                         orders.setPrice(rs.getInt("price"));
                         orders.setPurchase_date(rs.getString("purchase_date"));
                         orders.setAddress(rs.getString("address"));

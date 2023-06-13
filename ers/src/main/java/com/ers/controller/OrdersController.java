@@ -43,6 +43,7 @@ public class OrdersController {
                         orders.setOrder_id(rs.getInt("order_id"));
                         orders.setUser_id(rs.getInt("user_id"));
                         orders.setExhibit_id(rs.getInt("exhibit_id"));
+                        orders.setTitle(rs.getString("title"));
                         orders.setPrice(rs.getInt("price"));
                         orders.setPurchase_date(rs.getString("purchase_date"));
                         orders.setAddress(rs.getString("address"));
@@ -69,6 +70,7 @@ public class OrdersController {
     @PostMapping("/order")
     public ResponseEntity<Object> addOrder(@RequestBody @Validated Orders orders) {
         int exhibitPrice;
+        String exhibitTitle;
         //유저가 존재하는지 확인
         try {
             String query = "SELECT COUNT(*) FROM user WHERE user_id = ?";
@@ -89,6 +91,10 @@ public class OrdersController {
             query = "SELECT price FROM exhibit WHERE exhibit_id = ?";
             exhibitPrice = jdbcTemplate.queryForObject(query, Integer.class, orders.getExhibit_id());
 
+            //전시 제목 확인
+            query = "SELECT title FROM exhibit WHERE exhibit_id = ?";
+            exhibitTitle = jdbcTemplate.queryForObject(query, String.class, orders.getExhibit_id());
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseInfo(HttpStatus.NOT_FOUND.value(),
@@ -96,7 +102,7 @@ public class OrdersController {
         }
         try {
             //DB의 order 테이블에 저장
-            String query = "INSERT INTO orders (`user_id`, `exhibit_id`, `price`, `purchase_date`, `address`, `name`,`tel`, `amount` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO orders (`user_id`, `exhibit_id`, `title`, `price`, `purchase_date`, `address`, `name`,`tel`, `amount` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             //주문 가격
             int totalPrice = exhibitPrice * orders.getAmount();
             //주문 날짜
@@ -104,7 +110,7 @@ public class OrdersController {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String formattedDate = currentDate.format(dateFormatter);
 
-            int rowsAffected = jdbcTemplate.update(query, orders.getUser_id(), orders.getExhibit_id(), totalPrice, formattedDate,
+            int rowsAffected = jdbcTemplate.update(query, orders.getUser_id(), orders.getExhibit_id(), exhibitTitle, totalPrice, formattedDate,
                     orders.getAddress(), orders.getName(), orders.getTel(), orders.getAmount());
 
             if (rowsAffected > 0) {

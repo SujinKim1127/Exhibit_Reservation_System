@@ -14,6 +14,7 @@ public class Orders {
     @NotNull
     @PositiveOrZero
     private int exhibit_id;
+    private String title;
     @PositiveOrZero
     private int price;
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -100,5 +101,13 @@ public class Orders {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
