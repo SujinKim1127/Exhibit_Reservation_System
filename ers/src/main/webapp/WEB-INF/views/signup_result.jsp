@@ -13,12 +13,9 @@
         String loginID = session.getAttribute("loginID").toString();
     System.out.println(loginID);
 %>
-
-<a href="./logout">로그아웃</a>
-<%
-} else {
-%>
-<a href="./signin">로그인</a>
+<a href="http://localhost:8080/logout">로그아웃</a>
+<%} else {%>
+<a href="http://localhost:8080/signin">로그인</a>
 <%}%>
 
 <p>회원가입 정보</p>

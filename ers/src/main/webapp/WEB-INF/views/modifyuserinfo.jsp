@@ -17,11 +17,9 @@
   if(loginID != null) {
 %>
 
-<a href="./logout">로그아웃</a>
-<%
-} else {
-%>
-<a href="./signin">로그인</a>
+<a href="http://localhost:8080/logout">로그아웃</a>
+<%} else {%>
+<a href="http://localhost:8080/signin">로그인</a>
 <%}%>
 
 <c:if test="${! empty authInfo}">
