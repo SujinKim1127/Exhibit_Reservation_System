@@ -17,7 +17,7 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-        response.sendRedirect(req.getContextPath() + "/login");
+        response.sendRedirect(req.getContextPath() + "/signin");
         return false;
     }
 }
