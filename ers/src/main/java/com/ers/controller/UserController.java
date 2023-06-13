@@ -1,9 +1,10 @@
 package com.ers.controller;
 
-import com.ers.ResponseInfo;
 import com.ers.model.LoginInfo;
 import com.ers.model.User;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,49 +13,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDate;
 
-
-import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.List;
 
 @Controller
-public class HelloController {
+public class UserController {
     private JdbcTemplate jdbcTemplate;
-
-    @GetMapping("/showapi")
-    public String showApi(Model model){
-        return "showapi";
-    }
 
     private ArrayList<User> userArrayList;
 
-    public HelloController() {
+    public UserController() {
         userArrayList = new ArrayList<User>();
         String login = "SELECT * FROM user WHERE userid = ?";
-
     }
-
-
-//    @RequestMapping(value = "/signup", method = RequestMethod.GET)
-//    public String signup(User user, Model model, HttpSession session) {
-//        return "signup";
-//    }
 
     @GetMapping("/signup")
     public String signup(User user){
@@ -153,8 +127,15 @@ public class HelloController {
         return "logout";
     }
 
+    @RequestMapping("/userInfo")
+    public String userinfo(@PathVariable("id") HttpSession session){
+        if(session.getAttribute("authInfo") == null) return "redirect:/signin";
+        return "error";
+    }
+
     @RequestMapping("/userInfo/{id}")
     public String userinfo(@PathVariable("id") String userid, User user, HttpSession session) {
+        if(session.getAttribute("authInfo") == null) return "redirect:/signin";
         if(user == null) user = new User();
         String loginID = session.getAttribute("loginID").toString();
         String query = "SELECT * FROM user WHERE id = ?";
@@ -192,11 +173,4 @@ public class HelloController {
         }
         return "modifyinfo";
     }
-
-
-
-
-
-
-
 }

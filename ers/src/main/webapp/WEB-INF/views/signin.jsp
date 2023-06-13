@@ -28,7 +28,15 @@
     <P> ${authInfo.userid}님 환영합니다. </P>
     <a href="./userInfo/${authInfo.userid}">${authInfo.userid}님 정보</a><br>
     <a href="./modifyUserInfo">회원정보 수정</a><br>
-    <a href="./logout">로그아웃</a>
+    <a href="./logout">로그아웃</a> <br>
 </c:if>
+<%
+    if(session.getAttribute("loginID") != null){
+if (session.getAttribute("loginID").toString().equals("admin")) {
+    %>
+<a href="./admin">전시 등록 하기</a>
+<%
+}}
+%>
 </body>
 </html>
