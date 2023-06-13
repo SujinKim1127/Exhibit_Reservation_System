@@ -117,7 +117,7 @@ public class UserController {
                 return rs.getInt("user_id");
             }, loginInfo.getUserid());
 
-            Cookie loginCookie = new Cookie("LOGINID", String.valueOf(user_id));
+            Cookie loginCookie = new Cookie("USERID", String.valueOf(user_id));
             rememberCookie.setPath("/signin");
             loginCookie.setPath("/");
             if(loginInfo.getRememberid()){
@@ -138,6 +138,10 @@ public class UserController {
 
     @RequestMapping("/logout")
     public String logout(HttpSession session, HttpServletResponse response) {
+        Cookie loginCookie = new Cookie("USERID", "-1");
+        loginCookie.setPath("/");
+        loginCookie.setMaxAge(0);
+        response.addCookie(loginCookie);
         if(session != null) session.invalidate();
         return "logout";
     }
