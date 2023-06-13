@@ -111,13 +111,22 @@ public class UserController {
             }
             session.setAttribute("authInfo", loginInfo);
             Cookie rememberCookie = new Cookie("REMEMBERID", loginInfo.getUserid());
+
+            String query = "SELECT user_id FROM user WHERE id = ?";
+            int user_id = jdbcTemplate.queryForObject(query, (rs, rowNum) -> {
+                return rs.getInt("user_id");
+            }, loginInfo.getUserid());
+
+            Cookie loginCookie = new Cookie("LOGINID", String.valueOf(user_id));
             rememberCookie.setPath("/signin");
+            loginCookie.setPath("/");
             if(loginInfo.getRememberid()){
                 rememberCookie.setMaxAge(60*60*24*30);
             } else{
                 rememberCookie.setMaxAge(0);
             }
             response.addCookie(rememberCookie);
+            response.addCookie(loginCookie);
             return "signin_result";
         }
         else{
@@ -128,7 +137,7 @@ public class UserController {
     }
 
     @RequestMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, HttpServletResponse response) {
         if(session != null) session.invalidate();
         return "logout";
     }

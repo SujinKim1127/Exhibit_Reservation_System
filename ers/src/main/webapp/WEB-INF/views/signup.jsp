@@ -19,12 +19,11 @@
 <%
 } else {
 %>
-<a href="./signin">로그인</a>
-<%}
-} else {
-%><a href="./signin">로그인</a>
-
+<a href="http://localhost:8080/logout">로그아웃</a>
+<%} }else {%>
+<a href="http://localhost:8080/signin">로그인</a>
 <%}%>
+
 <P> <spring:message code="signupmsg" /> </P>
 <form:form action="/signup/submit" modelAttribute="user">
     <p> <label> <spring:message code="id" />:<br>
