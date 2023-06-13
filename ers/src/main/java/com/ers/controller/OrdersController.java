@@ -51,12 +51,13 @@ public class OrdersController {
                         orders.setAmount(rs.getInt("amount"));
                         return orders;
                     }
-                }
+                },
+                orderId
         );
 
         if (orders.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new com.ers.model.ResponseInfo(HttpStatus.NOT_FOUND.value(),
-                    messageSource.getMessage("NotFound", null, null)));
+                    messageSource.getMessage("NotFoundOrder", null, null)));
 
         } else {
             Orders order = orders.get(0);
