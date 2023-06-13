@@ -6,6 +6,21 @@
 <head>
     <title>회원가입 정보</title>
 </head>
+<a style="margin-left: 300px" href="http://localhost:3000">홈</a>
+<%
+    if(session.getAttribute("loginID") != null) {
+
+        String loginID = session.getAttribute("loginID").toString();
+    System.out.println(loginID);
+%>
+
+<a href="./logout">로그아웃</a>
+<%
+} else {
+%>
+<a href="./signin">로그인</a>
+<%}%>
+
 <p>회원가입 정보</p>
 <p> <spring:message code="id" />: ${user.id} </p>
 <p> <spring:message code="name" />: ${user.name} </p>
@@ -13,7 +28,6 @@
 <p> <spring:message code="tel" />: ${user.tel} </p>
 <p> <spring:message code="address" />: ${user.address} </p>
 <p> <spring:message code="birthdate" />: ${user.birthdate} </p>
-<a href="/signin"> 로그인 </a>
 <body>
 
 </body>

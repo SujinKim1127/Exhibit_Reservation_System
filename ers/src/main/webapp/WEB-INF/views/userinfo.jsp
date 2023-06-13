@@ -9,6 +9,20 @@
 <%
     User user = (User) session.getAttribute("loginUser");
 %>
+<a style="margin-left: 300px" href="http://localhost:3000">홈</a>
+<%
+    String loginID = session.getAttribute("loginID").toString();
+    System.out.println(loginID);
+    if(loginID != null) {
+%>
+
+<a href="./logout">로그아웃</a>
+<%
+} else {
+%>
+<a href="./signin">로그인</a>
+<%}%>
+
 <body>
 <c:if test="${! empty authInfo}">
     <P> ${authInfo.userid}님 정보 </P>

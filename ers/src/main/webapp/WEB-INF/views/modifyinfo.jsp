@@ -6,8 +6,22 @@
 <head> <title>UserInfo</title> </head>
 <% request.setCharacterEncoding("UTF-8"); %>
 <body>
+<a style="margin-left: 300px" href="http://localhost:3000">홈</a>
+<%
+    String loginID = session.getAttribute("loginID").toString();
+    System.out.println(loginID);
+    if(loginID != null) {
+%>
+
+<a href="./logout">로그아웃</a>
+<%
+} else {
+%>
+<a href="./signin">로그인</a>
+<%}%>
+
 <c:if test="${! empty authInfo}">
-    <P> ${authInfo.userid}님 정보 </P>
+    <P> 수정된 ${authInfo.userid}님 정보 </P>
     <p> <spring:message code="name" />: ${user.name} </p>
     <p> <spring:message code="email" />: ${user.email} </p>
     <p> <spring:message code="address" />: ${user.address} </p>

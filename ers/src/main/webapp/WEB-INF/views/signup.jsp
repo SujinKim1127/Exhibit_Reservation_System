@@ -8,6 +8,23 @@
     <title>회원가입</title> </head>
 <body>
 <% request.setCharacterEncoding("UTF-8"); %>
+<a style="margin-left: 300px" href="http://localhost:3000">홈</a>
+<%
+    if(session.getAttribute("loginID") != null){
+    String loginID = session.getAttribute("loginID").toString();
+    System.out.println(loginID);
+    if(loginID != null) {
+%>
+<a href="./logout">로그아웃</a>
+<%
+} else {
+%>
+<a href="./signin">로그인</a>
+<%}
+} else {
+%><a href="./signin">로그인</a>
+
+<%}%>
 <P> <spring:message code="signupmsg" /> </P>
 <form:form action="/signup/submit" modelAttribute="user">
     <p> <label> <spring:message code="id" />:<br>
