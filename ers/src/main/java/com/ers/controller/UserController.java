@@ -155,7 +155,24 @@ public class UserController {
     }
 
     @RequestMapping("/modifyUserInfo")
-    public String modifyuserinfo(User user) { return "modifyuserinfo"; }
+    public String modifyuserinfo(User user, HttpSession session) {
+        if(user == null) user = new User();
+        String loginID = session.getAttribute("loginID").toString();
+        String query = "SELECT * FROM user WHERE id = ?";
+        user = jdbcTemplate.queryForObject(query, (rs, rowNum) -> {
+            User u = new User();
+            u.setId(rs.getString("id"));
+            u.setName(rs.getString("name"));
+            u.setPassword(rs.getString("password"));
+            u.setTel(rs.getString("tel"));
+            u.setEmail(rs.getString("email"));
+            u.setAddress(rs.getString("address"));
+            u.setBirthdate(rs.getDate("birthdate"));
+            return u;
+        }, loginID);
+        session.setAttribute("loginUser", user);
+
+        return "modifyuserinfo"; }
 
     @PostMapping("/submituserinfo")
     public String modifyUserInfoResult(@Validated User user, Errors errors, HttpSession session) {
