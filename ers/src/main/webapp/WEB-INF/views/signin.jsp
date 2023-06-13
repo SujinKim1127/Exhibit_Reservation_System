@@ -23,6 +23,7 @@
             <form:password path="pwd" />
             <form:errors path="pwd" /> </label> </p>
         <button class="btn" type="submit"> <spring:message code="submit" /> </button> </form:form>
+        <a href="./signup">회원가입 하러가기</a>
 </c:if>
 <c:if test="${! empty authInfo}">
     <P> ${authInfo.userid}님 환영합니다. </P>
