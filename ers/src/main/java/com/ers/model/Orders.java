@@ -1,14 +1,10 @@
 package com.ers.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class Order {
-    @NotNull
+public class Orders {
     @PositiveOrZero
     private int order_id;
     @NotNull
@@ -17,10 +13,8 @@ public class Order {
     @NotNull
     @PositiveOrZero
     private int exhibit_id;
-    @NotNull
     @PositiveOrZero
     private int price;
-    @NotEmpty
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String purchase_date;
@@ -28,7 +22,9 @@ public class Order {
     @NotEmpty
     private String name;
     @NotEmpty
+    @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}")
     private String tel;
+    @NotNull
     @Positive
     private int amount;
 

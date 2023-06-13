@@ -1,5 +1,6 @@
-package com.ers;
+package com.ers.config;
 
+import com.ers.AuthCheckInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class AppConfig implements WebMvcConfigurer {
     @Bean
     public MessageSource messageSource() {
-        ResourceBundleMessageSource ms = new ResourceBundleMessageSource(); ms.setBasenames("label");
+        ResourceBundleMessageSource ms = new ResourceBundleMessageSource(); ms.setBasenames("label", "validationmsg");
         ms.setDefaultEncoding("UTF-8");
         return ms;
     }
