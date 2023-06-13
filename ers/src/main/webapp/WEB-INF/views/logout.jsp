@@ -5,6 +5,7 @@
 <head> <title>Logout</title> </head>
 <% request.setCharacterEncoding("UTF-8"); %>
 <body>
+<a style="margin-left: 300px" href="http://localhost:3000">홈</a>
 <P> <spring:message code="logout" /> </P>
 <a href="./signin"> 뒤로.. </a>
 </body>

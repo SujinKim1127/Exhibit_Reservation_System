@@ -9,6 +9,7 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 <body>
 <c:if test="${empty authInfo}">
+    <a style="margin-left: 300px" href="http://localhost:3000">홈</a>
     <P> <spring:message code="loginmesg" /> </P>
     <form:form action="/signin/submit" modelAttribute="loginInfo">
         <p> <label>
@@ -26,10 +27,11 @@
         <a href="./signup">회원가입 하러가기</a>
 </c:if>
 <c:if test="${! empty authInfo}">
+    <a style="margin-left: 300px" href="http://localhost:3000">홈</a>
+    <a href="./logout">로그아웃</a>
     <P> ${authInfo.userid}님 환영합니다. </P>
     <a href="./userInfo/${authInfo.userid}">${authInfo.userid}님 정보</a><br>
-    <a href="./modifyUserInfo">회원정보 수정</a><br>
-    <a href="./logout">로그아웃</a> <br>
+    <a href="./modifyUserInfo">회원정보 수정</a><br><br>
 </c:if>
 <%
     if(session.getAttribute("loginID") != null){

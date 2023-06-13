@@ -8,6 +8,19 @@
 </head>
 <body>
 <% request.setCharacterEncoding("UTF-8"); %>
+<a style="margin-left: 300px" href="http://localhost:3000">홈</a>
+<%
+    String loginID = session.getAttribute("loginID").toString();
+    System.out.println(loginID);
+    if(loginID != null) {
+%>
+<a href="./logout">로그아웃</a>
+<%
+} else {
+%>
+<a href="./signin">로그인</a>
+<%}%>
+
 <P> 전시 등록 </P>
 <form:form action="/admin/submit" modelAttribute="exhibit">
     <p> <label> <spring:message code="title" />:<br>
