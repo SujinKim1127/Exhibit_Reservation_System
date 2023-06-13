@@ -43,10 +43,16 @@ public class UserController {
 
     @PostMapping("/signup/submit")
     public String submit(@Validated User user, Errors errors) {
-        for (User item : userArrayList) {
-            if (item.getId().equals(user.getId())) {
-                errors.rejectValue("id", "duplicated");
+        String query = "SELECT * FROM user WHERE id = ?";
+        boolean existID = jdbcTemplate.query(query, rs -> {
+            if (rs.next()) {
+                return true;
             }
+            return false;
+        }, user.getId());
+
+        if (existID) {
+            errors.rejectValue("id", "duplicated");
         }
         if (errors.hasErrors()) {
             return "signup";
@@ -61,7 +67,7 @@ public class UserController {
             int user_id = jdbcTemplate.queryForObject(stme, Integer.class);
             System.out.println(user_id);
 
-            int result = jdbcTemplate.update(sql,user_id+1, user.getId(), user.getPassword(), user.getName(), user.getTel(), user.getAddress(), sqlDate, user.getEmail());
+            int result = jdbcTemplate.update(sql,user_id, user.getId(), user.getPassword(), user.getName(), user.getTel(), user.getAddress(), sqlDate, user.getEmail());
         } catch (Exception e){
             System.out.println(e);
         }
