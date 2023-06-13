@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>회원가</title> </head>
+    <title>회원가입</title> </head>
 <body>
 <% request.setCharacterEncoding("UTF-8"); %>
 <P> <spring:message code="signupmsg" /> </P>
