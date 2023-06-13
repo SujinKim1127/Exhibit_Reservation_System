@@ -1,6 +1,6 @@
 package com.ers.controller;
 
-import com.ers.ResponseInfo;
+import com.ers.model.ResponseInfo;
 import com.ers.model.ExhibitResponse;
 import com.ers.model.Orders;
 import org.springframework.beans.factory.annotation.Autowired;

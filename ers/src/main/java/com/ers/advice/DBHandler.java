@@ -1,7 +1,7 @@
 package com.ers.advice;
 
 
-import com.ers.ResponseInfo;
+import com.ers.model.ResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;

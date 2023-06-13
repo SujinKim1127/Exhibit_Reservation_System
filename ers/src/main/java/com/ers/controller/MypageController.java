@@ -1,4 +1,4 @@
-package com.ers;
+package com.ers.controller;
 
 import com.ers.model.Likes;
 import com.ers.model.Mypage;
@@ -34,7 +34,6 @@ public class MypageController {
 
     @GetMapping("/mypage")
     public List<Mypage> mypage(HttpSession session) {
-
         String loginID = session.getAttribute("loginID").toString();
         String query = "SELECT user_id FROM user WHERE id = ?";
         int user_id = jdbcTemplate.queryForObject(query, (rs, rowNum) -> {
