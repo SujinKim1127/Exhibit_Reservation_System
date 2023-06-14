@@ -30,6 +30,24 @@ public class OrdersController {
     @Autowired
     MessageSource messageSource;
 
+    //주문 DELETE
+    @DeleteMapping("/order")
+    public ResponseEntity<ResponseInfo> deleteOrder(@RequestParam(value="id", required = true) String orderId) {
+        try {
+            String query = "DELETE FROM orders WHERE order_id = ?";
+            jdbcTemplate.update(query, orderId);
+
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).
+                    body(new ResponseInfo(HttpStatus.NO_CONTENT.value(),
+                            messageSource.getMessage("DeleteOrder", null, null)));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseInfo(HttpStatus.BAD_REQUEST.value(),
+                            messageSource.getMessage("BadRequest", null, null)));
+        }
+
+    }
+
     //주문 GET
     @GetMapping("/order")
     public ResponseEntity<Object> getOrder(@RequestParam(value="id", required = true) String orderId) {
