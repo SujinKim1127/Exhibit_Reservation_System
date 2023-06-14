@@ -60,13 +60,29 @@ public class LikeController {
             int countLikes = jdbcTemplate.queryForObject(query, Integer.class, like.getUser_id(), like.getExhibit_id());
 
             if (countLikes > 0) { //이미 좋아요 존재
+                //likes 테이블의 column 삭제
                 query = "DELETE FROM likes WHERE user_id = ? AND exhibit_id = ?";
                 jdbcTemplate.update(query, like.getUser_id(), like.getExhibit_id());
+
+                //exhibit 테이블의 likes 개수 업데이트
+                query = "SELECT likes FROM exhibit WHERE exhibit_id = ?";
+                int existedLikes = jdbcTemplate.queryForObject(query, Integer.class, like.getExhibit_id());
+                query = "UPDATE exhibit SET `likes` = ? WHERE exhibit_id = ?";
+                jdbcTemplate.update(query, existedLikes - 1, like.getExhibit_id());
+
                 return ResponseEntity.noContent().build();
 
             } else { //새로 좋아요
+                //likes 테이블의 column 추가
                 query = "INSERT INTO likes (`user_id`, `exhibit_id`, `title`) VALUES (?, ?, ?)";
                 jdbcTemplate.update(query, like.getUser_id(), like.getExhibit_id(), exhibitTitle);
+
+                //exhibit 테이블의 likes 개수 업데이트
+                query = "SELECT likes FROM exhibit WHERE exhibit_id = ?";
+                int existedLikes = jdbcTemplate.queryForObject(query, Integer.class, like.getExhibit_id());
+                query = "UPDATE exhibit SET `likes` = ? WHERE exhibit_id = ?";
+                jdbcTemplate.update(query, existedLikes + 1, like.getExhibit_id());
+
                 return ResponseEntity.status(HttpStatus.CREATED).
                         body(new ResponseInfo(HttpStatus.CREATED.value(),
                                 messageSource.getMessage("AddLike", null, null)));

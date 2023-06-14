@@ -65,7 +65,6 @@ public class UserController {
             // user_id 넣기
             String stme = "select COUNT(*) from user";
             int user_id = jdbcTemplate.queryForObject(stme, Integer.class);
-            System.out.println(user_id);
 
             int result = jdbcTemplate.update(sql,user_id, user.getId(), user.getPassword(), user.getName(), user.getTel(), user.getAddress(), sqlDate, user.getEmail());
         } catch (Exception e){
