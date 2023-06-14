@@ -2,10 +2,16 @@ package com.ers.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 public class Likes {
     private int wish_id;
+    @NotNull
+    @PositiveOrZero
     private int user_id;
+    @NotNull
+    @PositiveOrZero
     private int exhibit_id;
 
     private String title;
