@@ -31,9 +31,11 @@ public class AdminController {
 
     @RequestMapping(value="/admin", method = RequestMethod.GET)
     public String admin(Exhibit exhibit, Model model, HttpSession session) {
-        String loginID = session.getAttribute("loginID").toString();
-        if(loginID.equals("admin")){
-            return "admin";
+        if(session.getAttribute("loginID") != null){
+            String loginID = session.getAttribute("loginID").toString();
+            if(loginID.equals("admin")){
+                return "admin";
+            }
         }
         return "redirect:/signin";
     }
