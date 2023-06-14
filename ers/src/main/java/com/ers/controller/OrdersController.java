@@ -1,7 +1,7 @@
 package com.ers.controller;
 
+import com.ers.model.OrderResponse;
 import com.ers.model.ResponseInfo;
-import com.ers.model.ExhibitResponse;
 import com.ers.model.Orders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -137,7 +137,7 @@ public class OrdersController {
                 int generatedId = jdbcTemplate.queryForObject(selectQuery, Integer.class);
 
                 return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(new ExhibitResponse(generatedId));
+                        .body(new OrderResponse(generatedId));
             } else {
                 throw new Exception();
             }
