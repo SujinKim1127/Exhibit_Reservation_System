@@ -16,7 +16,7 @@
 
 <body>
 <p>전시 등록 완료</p>
-<a href="/"> 메인으로 </a>
+<a href="http://localhost:3000"> 메인으로 </a>
 
 </body>
 </html>
